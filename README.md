@@ -22,35 +22,6 @@ Both models were trained for 15 epochs. The notebooks include learning curves, p
 
 The ResNet50V2 approach performed better on the notebook's validation subset. These are **historical notebook outputs**, not results from a separate held-out test dataset or from the revised training script.
 
-## Repository contents
-
-```text
-notebooks/              Original CNN and ResNet50V2 Colab notebooks
-src/train.py            Revised, configurable training and evaluation script
-requirements.txt        Python dependencies
-reports/EVALUATION.md   Review of the original experiments and limitations
-reports/RESULTS.md      Recorded notebook results
-GITHUB_SETUP.md         Instructions for publishing and updating this repository
-```
-
-## Running the revised experiment
-
-1. Obtain the image dataset used in the notebooks and extract it into a directory containing one subfolder per class. The original notebooks expect `/content/asl-full/train/` from a Google Drive ZIP named `asl-full.zip`. The original ZIP is not included in this repository, and its provenance should be documented before public redistribution.
-2. Install Python 3.10+ and the dependencies:
-
-```bash
-python -m pip install -r requirements.txt
-```
-
-3. Run one of the revised experiments:
-
-```bash
-python src/train.py --data-dir /path/to/asl-full/train --model cnn
-python src/train.py --data-dir /path/to/asl-full/train --model resnet50v2
-```
-
-The revised script uses a deterministic 70/15/15 split, augmentation only on training data, appropriate model-specific preprocessing, and a separate held-out test set. It saves evaluation metrics and a classification report to `outputs/`. Its results should not be directly compared with the historical 80/20 experiments because the data split and preprocessing differ.
-
 ## What I learned and what I would improve
 
 Comparing these models helped me see the value of transfer learning for image classification. I also found several issues in the original evaluation setup that I want to address before making stronger claims: the validation split was called a test set, validation augmentation was enabled, and the ResNet50V2 input pipeline did not use the backbone's recommended preprocessing. A future version should also evaluate images from different signers and recording conditions, rather than relying only on a random image split.
